@@ -553,7 +553,7 @@ public class Window_01 {
 					chckbxNewCheckBox_2.setToolTipText("Switch to calculate");
 					lblNewLabel_46.setEnabled(false);	lblNewLabel_46.setVisible(false);
 					lblNewLabel_47.setEnabled(false);	lblNewLabel_47.setVisible(false);
-																															//{"1","2","3","4","5","6","7","8","9","0","."}
+										
 				}
 			}
 		});		
