@@ -563,15 +563,15 @@ public class Window_01 {
 
 		
 		JButton btnNewButton = new JButton("Calculation");
-		btnNewButton.setToolTipText("Press several times");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				final double g =9.81;
-	/*		double H_res_1 = 0.0;
-			double H_res_2 = 0.5;
-			
-			while (Math.abs((H_res_2-H_res_1))	< 0.001) { */
-			    Double Q		= Double.parseDouble(textField.getText())/3600;				//Pump flow rate, m3/hr-->m3/SEC
+				final Double g = 9.81;
+	
+			Double	Q		= Double.parseDouble(textField.getText())/3600;				//Pump flow rate, m3/hr-->m3/SEC
+			Double	Q_summ_1= 1.01*Q;		
+											//	123456789012345678
+			while (Math.abs((Q_summ_1-Q))	> 0.000000000000000001) { 
+						Q		= Q_summ_1;
 				Double H		= Double.parseDouble(textField_1.getText());				//Pump head, m
 				Double n		= Double.parseDouble(textField_2.getText());				//Rotation speed, rpm
 				Double NPSH		= Double.parseDouble(textField_3.getText());				//Net positive suction head, m
@@ -586,9 +586,7 @@ public class Window_01 {
 				Double d_hub	= Double.parseDouble(textField_12.getText())/1000;			//Hub diameter, mm --> m
 				Double d_suc	= Double.parseDouble(textField_13.getText())/1000;			//Suction diameter, mm --> m
 				Double Eff_Hyd	= Double.parseDouble(textField_14.getText());				//Hydraulic efficiency
-				
 				Double y	   = 1-(   Math.sin(betta_2)/(  z*Math.sqrt(3)/(2*Math.PI) + Math.sin(betta_2)  ));	
-		
 				Double ksi_2	= 1-z*sigma_2/(Math.PI*D_2*Math.sin(betta_2));
 				Double U_2		= Math.PI*n*D_2/60;
 				Double V_2m		= Q/ (Math.PI*D_2*b_2*ksi_2);
@@ -597,78 +595,47 @@ public class Window_01 {
 				Double H_res	= H_t*Eff_Hyd;	  										//Pump head, m
 				Double V_abs2	= Math.sqrt(Math.pow(V_2m, 2.0)+Math.pow(V_2u, 2.0));		//Output flow velosity (Abs), m/s
 				Double bett_out	= Math.atan(V_2m/V_2u)*180.0/Math.PI;									//Output angle of flow, rad--> deg
-				
-				
-				
 				Double n_s_1	= new BigDecimal(n_s).setScale(4, RoundingMode.UP).doubleValue();  //rounding of Specific speed
-				Double SSS_1	= new BigDecimal(SSS).setScale(3, RoundingMode.UP).doubleValue();  //rounding of Suction-specific speed
-								
+				Double SSS_1	= new BigDecimal(SSS).setScale(3, RoundingMode.UP).doubleValue();  //rounding of Suction-specific speed							
 				lblNewLabel_40.setText(n_s_1.toString());
 				lblNewLabel_41.setText(SSS_1.toString());
 				lblNewLabel_42.setText(H_t.toString());
 				textField_15.setText(H_res.toString());
 				
-				Double Q_nom	= Double.parseDouble(textField_16.getText())/3600.0;			//Seal's diameter, m3/hr --> m3/s    	
-				Double d_seal_1	= Double.parseDouble(textField_24.getText())/1000.0;			//Seal's diameter 1, mm --> m    					
-				Double d_seal_2	= Double.parseDouble(textField_28.getText())/1000.0;			//Seal's diameter 2, mm --> m    
-//				Double d_seal_3	= Double.parseDouble(textField_34.getText())/1000.0;			//Seal's diameter 3, mm --> m    	
-				Double delta_1	= Double.parseDouble(textField_17.getText())/1000.0;			//Value of gap seal 1, mm --> m
-				Double delta_2	= Double.parseDouble(textField_25.getText())/1000.0;			//Value of gap seal 2, mm --> m
-//				Double delta_3	= Double.parseDouble(textField_30.getText())/1000.0;			//Value of gap seal 3, mm --> m
-				Double nyu		= Double.parseDouble(textField_20.getText())/1000000.0;		//Viscosity, mm2/s --> m2/s    
-				Double lyambda1	= Double.parseDouble(textField_22.getText())		;		//Coefficient of friction resistance 1
-				Double lyambda2	= Double.parseDouble(textField_29.getText())		;		//Coefficient of friction resistance 2
-//				Double lyambda3	= Double.parseDouble(textField_33.getText())		;		//Coefficient of friction resistance 3
-				Double l_gap1	= Double.parseDouble(textField_18.getText())/1000.0;			//Length of gap seal 1, mm --> m
-				Double l_gap2	= Double.parseDouble(textField_26.getText())/1000.0;			//Length of gap seal 2, mm --> m
-//				Double l_gap3	= Double.parseDouble(textField_31.getText())/1000.0;			//Length of gap seal 3, mm --> m				
-				Double Eff_wh	= Double.parseDouble(textField_21.getText());				//Approximate wheel efficiency											
-				Double H_leak1	= H_t-(V_2u*V_2u)/(2.0*g)-  Math.pow(U_2,2.0)*(1-Math.pow(((d_seal_1+delta_1)/D_2),2.0))/ (8.0*g);
-				Double H_leak2	= H_t-(V_2u*V_2u)/(2.0*g)-  Math.pow(U_2,2.0)*(1-Math.pow(((d_seal_2+delta_2)/D_2),2.0))/ (8.0*g);
-			
-				
+				Double Q_nom	= Double.parseDouble(textField_16.getText())/3600.0;			//Seal's diameter, m3/hr --> m3/s    	//				Double d_seal_3	= Double.parseDouble(textField_34.getText())/1000.0;			//Seal's diameter 3, mm --> m    
+				Double d_seal_1	= Double.parseDouble(textField_24.getText())/1000.0;			//Seal's diameter 1, mm --> m    		//				Double delta_3	= Double.parseDouble(textField_30.getText())/1000.0;			//Value of gap seal 3, mm --> m			
+				Double d_seal_2	= Double.parseDouble(textField_28.getText())/1000.0;			//Seal's diameter 2, mm --> m    		//				Double lyambda3	= Double.parseDouble(textField_33.getText())		;		//Coefficient of friction resistance 3
+				Double delta_1	= Double.parseDouble(textField_17.getText())/1000.0;			//Value of gap seal 1, mm --> m 		//				Double l_gap3	= Double.parseDouble(textField_31.getText())/1000.0;			//Length of gap seal 3, mm --> m
+				Double delta_2	= Double.parseDouble(textField_25.getText())/1000.0;			//Value of gap seal 2, mm --> m			//				Double myu31		= 0.01;
+				Double nyu		= Double.parseDouble(textField_20.getText())/1000000.0;		//Viscosity, mm2/s --> m2/s    				//				Double u_y3		= 0.12;
+				Double lyambda1	= Double.parseDouble(textField_22.getText())		;		//Coefficient of friction resistance 1		//				Double v_03		= 0.15;
+				Double lyambda2	= Double.parseDouble(textField_29.getText())		;		//Coefficient of friction resistance 2		//				Double	Q_leak3	= myu31*Math.PI* (d_seal_3+delta_3)* delta_3*Math.sqrt(2*g*H_leak3);
+				Double l_gap1	= Double.parseDouble(textField_18.getText())/1000.0;			//Length of gap seal 1, mm --> m		//		        u_y3	= 0.5*omega*(d_seal_3+delta_3);
+				Double l_gap2	= Double.parseDouble(textField_26.getText())/1000.0;			//Length of gap seal 2, mm --> m		//				v_03	= Q_leak3/ (Math.PI*(d_seal_3+delta_3)* delta_3);
+				Double Eff_wh	= Double.parseDouble(textField_21.getText());				//Approximate wheel efficiency				//				lyambda3	= 0.28316210710108*Math.pow(Rey_2, -0.239175686607085);	textField_33.setText(lyambda1.toString());					
+				Double H_leak1	= H_t-(V_2u*V_2u)/(2.0*g)-  Math.pow(U_2,2.0)*(1-Math.pow(((d_seal_1+delta_1)/D_2),2.0))/ (8.0*g);		//				Double lyambda_gap3	= lyambda3*Math.sqrt(1+	0.25/Math.pow(1.0+1.3*Math.sqrt(lyambda3), 2.0)	*	Math.pow(u_y3/v_03, 2.0));							
+				Double H_leak2	= H_t-(V_2u*V_2u)/(2.0*g)-  Math.pow(U_2,2.0)*(1-Math.pow(((d_seal_2+delta_2)/D_2),2.0))/ (8.0*g);		//				lyambda*Math.sqrt(1+1/(4*Math.pow((1+1.3*Math.sqrt(lyambda)), 2)*Math.pow(u_y/v_0, 2)));
 				Double myu11	= 0.01,	myu12	= 1.2,	myu21	= 0.01,	myu22	= 1.2;
-//				Double myu31		= 0.01;
-				
-				
 				Double u_y1		= 0.1,	u_y2	= 0.11;
-//				Double u_y3		= 0.12;
 				Double v_01		= 0.13,	v_02	= 0.14;
-//				Double v_03		= 0.15;
 				Double Rey_1	= 1.0,	Rey_2	= 2.0;
 				Double omega	=  Math.PI*n/60.0;
-				
-				
-				
 					if (chckbxNewCheckBox.isSelected()) {
 						while (Math.abs(myu22-myu21)>=0.000000000000001) {
 							Double	Q_leak1	= myu11*Math.PI* (d_seal_1+delta_1)* delta_1*Math.sqrt(2*g*H_leak1);
 							Double	Q_leak2	= myu21*Math.PI* (d_seal_2+delta_2)* delta_2*Math.sqrt(2*g*H_leak2);
-	//						Double	Q_leak3	= myu31*Math.PI* (d_seal_3+delta_3)* delta_3*Math.sqrt(2*g*H_leak3);
 							          u_y1	= 0.5*omega*(d_seal_1+delta_1);
 							          u_y2	= 0.5*omega*(d_seal_2+delta_2);
-	//						          u_y3	= 0.5*omega*(d_seal_3+delta_3);
 							          v_01	= Q_leak1/ (Math.PI*(d_seal_1+delta_1)* delta_1);
 							          v_02	= Q_leak2/ (Math.PI*(d_seal_2+delta_2)* delta_2);
-	//						          v_03	= Q_leak3/ (Math.PI*(d_seal_3+delta_3)* delta_3);
-							
 							          Rey_1	= 2*delta_1 * Math.sqrt(Math.pow(v_01, 2.0)	+	Math.pow(0.5*u_y1, 2.0))/nyu;
 							          Rey_2	= 2*delta_2 * Math.sqrt(Math.pow(v_02, 2.0)	+	Math.pow(0.5*u_y2, 2.0))/nyu;
-							
 							          if (chckbxNewCheckBox_3.isSelected()) {
 							        	  lyambda1	= 0.28316210710108*Math.pow(Rey_1, -0.239175686607085);	textField_22.setText(lyambda1.toString());
 							        	  lyambda2	= 0.28316210710108*Math.pow(Rey_2, -0.239175686607085);	textField_29.setText(lyambda1.toString());
-				//			        	  lyambda3	= 0.28316210710108*Math.pow(Rey_2, -0.239175686607085);	textField_33.setText(lyambda1.toString());
-										
-							          } else {
-
-									
-							          };	
+							          } 	
 							Double lyambda_gap1	= lyambda1*Math.sqrt(1+	0.25/Math.pow(1.0+1.3*Math.sqrt(lyambda1), 2.0)	*	Math.pow(u_y1/v_01, 2.0));
 							Double lyambda_gap2	= lyambda2*Math.sqrt(1+	0.25/Math.pow(1.0+1.3*Math.sqrt(lyambda2), 2.0)	*	Math.pow(u_y2/v_02, 2.0));
-			//				Double lyambda_gap3	= lyambda3*Math.sqrt(1+	0.25/Math.pow(1.0+1.3*Math.sqrt(lyambda3), 2.0)	*	Math.pow(u_y3/v_03, 2.0));
-							
-									//lyambda*Math.sqrt(1+1/(4*Math.pow((1+1.3*Math.sqrt(lyambda)), 2)*Math.pow(u_y/v_0, 2)));
 						             myu11	= myu12;
 						             myu21	= myu22;
 						             myu12	= 1/Math.sqrt(1.35+lyambda_gap1*l_gap1/(2*delta_1));
@@ -683,25 +650,16 @@ public class Window_01 {
 							          Rey_1	= 2.0*delta_1 * Math.sqrt(Math.pow(v_01, 2.0)	+	Math.pow(0.5*u_y1, 2.0))/nyu;
 							         
 							          if (chckbxNewCheckBox_3.isSelected()) {
-							        	  lyambda1	= 0.28316210710108*Math.pow(Rey_1, -0.239175686607085);	textField_22.setText(lyambda1.toString());
-	
-										
-							          } else {
-
-									
-							          };
+							        	  lyambda1	= 0.28316210710108*Math.pow(Rey_1, -0.239175686607085);	textField_22.setText(lyambda1.toString());										
+							          }
 							Double lyambda_gap1	= lyambda1*Math.sqrt(1.0+	0.25/Math.pow(1.0+1.3*Math.sqrt(lyambda1), 2.0)	*	Math.pow(u_y1/v_01, 2.0));
 							
 									//lyambda*Math.sqrt(1+1/(4*Math.pow((1+1.3*Math.sqrt(lyambda)), 2)*Math.pow(u_y/v_0, 2)));
 						             myu11	= myu12;
 						             myu12	= 1.0/Math.sqrt(1.35+lyambda_gap1*l_gap1/(2.0*delta_1));
 						}
-						myu22=0.0;
-					
+						myu22=0.0;					
 					}
-				
-				
-				
 				
 				Double  myu1	= myu12;
 				Double  myu2	= myu22;
@@ -709,11 +667,11 @@ public class Window_01 {
 				Double	Q_leak2	= myu2*Math.PI*d_seal_2* delta_2*Math.sqrt(2.0*g*H_leak2);
 				Double  Eff_vol	= Q_nom/ (Q_nom+Q_leak1+Q_leak2);
 				Double	Q_leak_1= Q_leak1*3600.0;
-				Double	Q_leak_2= Q_leak2*3600.0;
-				Double	Q_summ_1= (Q_nom+Q_leak1+Q_leak2)*3600.0;
-				Double H_stat	= H_t*Eff_wh - 0.5*Math.pow(V_abs2, 2.0)/g; 
-				
-						
+				Double	Q_leak_2= Q_leak2*3600.0;						
+						Q_summ_1= (Q_nom+Q_leak1+Q_leak2);
+				Double  Q_summ	= (Q_nom+Q_leak1+Q_leak2)*3600.0;
+					
+				Double H_stat	= H_t*Eff_wh - 0.5*Math.pow(V_abs2, 2.0)/g; 						
 				   lblNewLabel_34.setText(myu1.toString()); 		lblNewLabel_43.setText(myu2.toString());
 				   lblNewLabel_35.setText(Rey_1.toString()); 		lblNewLabel_44.setText(Rey_2.toString());
 				   lblNewLabel_36.setText(Q_leak_1.toString());		lblNewLabel_45.setText(Q_leak_2.toString());
@@ -722,9 +680,10 @@ public class Window_01 {
 				   lblNewLabel_39.setText(H_stat.toString());
 				   lblNewLabel_51.setText(V_abs2.toString());
 				   lblNewLabel_53.setText(bett_out.toString());
-				   textField.setText(Q_summ_1.toString());
-				   
+				   textField.setText(Q_summ.toString());
 			}
+			}	   
+			
 		});
 		btnNewButton.setBounds(450, 430, 100, 20);
 	    frame.getContentPane().add(btnNewButton);
