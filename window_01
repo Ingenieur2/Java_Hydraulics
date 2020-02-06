@@ -523,14 +523,14 @@ public class Window_01 {
 					chckbxNewCheckBox_2.setToolTipText("Switch twice to refresh");
 					lblNewLabel_46.setEnabled(true);	lblNewLabel_46.setVisible(true);
 					lblNewLabel_47.setEnabled(true);	lblNewLabel_47.setVisible(true);
-				Double Q				= Double.parseDouble(textField.getText())/3600;				//Pump flow rate, m3/hr-->
+				Double Q				= Double.parseDouble(textField.getText())/3600.0;				//Pump flow rate, m3/hr-->
 				Double H				= Double.parseDouble(textField_1.getText());				//Pump head, m	
 				Double n				= Double.parseDouble(textField_2.getText());				//Rotation speed, rpm
-				Double n_s				= (3.65*n*Math.pow(Q, 0.5))/ Math.pow(H, 0.75) ;			//Specific speed
+				Double n_s				= 3.65*n*Math.sqrt(Q)/ Math.pow(H, 0.75) ;			//Specific speed
 				
 				Double 	D_head 			= Math.sqrt(2.0*9.81*H)/n; 						//	D_napor:= sqrt(2*9.81*H)/n; 
-				Double D_2_head			= 18.75*D_head*Math.pow((n_s/100), (1.0/6.0));    	//	 D_2_napor:=18.75*D_napor*Exp((1/6)*Ln(n_s/100)); 
-				Double b_2_head			= 1.3*D_head*Math.pow((n_s/100), (1.0/6.0));		//	 b_2_napor:=1.3*D_napor*Exp((1/6)*Ln(n_s/100));
+				Double D_2_head			= 18.75*D_head*Math.pow((n_s/100.0), (1.0/6.0));    	//	 D_2_napor:=18.75*D_napor*Exp((1/6)*Ln(n_s/100)); 
+				Double b_2_head			= 1.3*D_head*Math.pow((n_s/100.0), (1.0/6.0));		//	 b_2_napor:=1.3*D_napor*Exp((1/6)*Ln(n_s/100));
 				
 				Double D_flow			= Math.pow((Q/n), (1.0/3.0));
 				Double D_2_flow			= 9.35*D_flow/(Math.sqrt(n_s/100.0));
@@ -568,7 +568,7 @@ public class Window_01 {
 				final Double g = 9.81;
 	
 			Double	Q		= Double.parseDouble(textField.getText())/3600;				//Pump flow rate, m3/hr-->m3/SEC
-			Double	Q_summ_1= 1.01*Q;		
+			Double	Q_summ_1= 0.05*Q;		
 											//	123456789012345678
 			while (Math.abs((Q_summ_1-Q))	> 0.000000000000000001) { 
 						Q		= Q_summ_1;
@@ -576,25 +576,25 @@ public class Window_01 {
 				Double n		= Double.parseDouble(textField_2.getText());				//Rotation speed, rpm
 				Double NPSH		= Double.parseDouble(textField_3.getText());				//Net positive suction head, m
 				Double S_F		= Double.parseDouble(textField_6.getText());				//Safety factor
-				Double n_s		= (3.65*n*Math.pow(Q, 0.5))/ Math.pow(H, 0.75) ;			//Specific speed
-				Double SSS		= (n*Math.pow(Q, 0.5))/ Math.pow((0.1*NPSH/S_F), 0.75) ;	//Suction-specific speed
-				Double D_2		= Double.parseDouble(textField_7.getText())/1000;			//Impeller diameter, mm --> m
-				Double b_2		= Double.parseDouble(textField_8.getText())/1000;			//Outlet width, mm  --> m
-				Double sigma_2	= Double.parseDouble(textField_9.getText())/1000;			//Blade thickness, mm --> m
+				Double n_s		= (3.65*n*Math.sqrt(Q))/ Math.pow(H, 0.75) ;			//Specific speed
+				Double SSS		= (n*Math.sqrt(Q))/ Math.pow((0.1*NPSH/S_F), 0.75) ;	//Suction-specific speed
+				Double D_2		= Double.parseDouble(textField_7.getText())/1000.0;			//Impeller diameter, mm --> m
+				Double b_2		= Double.parseDouble(textField_8.getText())/1000.0;			//Outlet width, mm  --> m
+				Double sigma_2	= Double.parseDouble(textField_9.getText())/1000.0;			//Blade thickness, mm --> m
 				Double z		= Double.parseDouble(textField_10.getText());				//Number of blades
-				Double betta_2	= Double.parseDouble(textField_11.getText())/180*Math.PI;	//Outlet blade angle, deg --> radians
-				Double d_hub	= Double.parseDouble(textField_12.getText())/1000;			//Hub diameter, mm --> m
-				Double d_suc	= Double.parseDouble(textField_13.getText())/1000;			//Suction diameter, mm --> m
+				Double betta_2	= Math.toRadians(Double.parseDouble(textField_11.getText()));	//Outlet blade angle, deg --> radians
+				Double d_hub	= Double.parseDouble(textField_12.getText())/1000.0;			//Hub diameter, mm --> m
+				Double d_suc	= Double.parseDouble(textField_13.getText())/1000.0;			//Suction diameter, mm --> m
 				Double Eff_Hyd	= Double.parseDouble(textField_14.getText());				//Hydraulic efficiency
-				Double y	   = 1-(   Math.sin(betta_2)/(  z*Math.sqrt(3)/(2*Math.PI) + Math.sin(betta_2)  ));	
-				Double ksi_2	= 1-z*sigma_2/(Math.PI*D_2*Math.sin(betta_2));
-				Double U_2		= Math.PI*n*D_2/60;
+				Double y	   = 1.0-(   Math.sin(betta_2)/(  z*Math.sqrt(3.0)/(2.0*Math.PI) + Math.sin(betta_2)  ));	
+				Double ksi_2	= 1.0-z*sigma_2/(Math.PI*D_2*Math.sin(betta_2));
+				Double U_2		= Math.PI*n*D_2/60.0;
 				Double V_2m		= Q/ (Math.PI*D_2*b_2*ksi_2);
 				Double V_2u		= y*U_2- V_2m*Math.cos(betta_2) / Math.sin(betta_2);
 				Double H_t		= U_2* V_2u/g;	  										//Theoretical head, m
 				Double H_res	= H_t*Eff_Hyd;	  										//Pump head, m
 				Double V_abs2	= Math.sqrt(Math.pow(V_2m, 2.0)+Math.pow(V_2u, 2.0));		//Output flow velosity (Abs), m/s
-				Double bett_out	= Math.atan(V_2m/V_2u)*180.0/Math.PI;									//Output angle of flow, rad--> deg
+				Double bett_out	= Math.toDegrees(Math.atan(V_2m/V_2u));									//Output angle of flow, rad--> deg
 				Double n_s_1	= new BigDecimal(n_s).setScale(4, RoundingMode.UP).doubleValue();  //rounding of Specific speed
 				Double SSS_1	= new BigDecimal(SSS).setScale(3, RoundingMode.UP).doubleValue();  //rounding of Suction-specific speed							
 				lblNewLabel_40.setText(n_s_1.toString());
@@ -622,8 +622,8 @@ public class Window_01 {
 				Double omega	=  Math.PI*n/60.0;
 					if (chckbxNewCheckBox.isSelected()) {
 						while (Math.abs(myu22-myu21)>=0.000000000000001) {
-							Double	Q_leak1	= myu11*Math.PI* (d_seal_1+delta_1)* delta_1*Math.sqrt(2*g*H_leak1);
-							Double	Q_leak2	= myu21*Math.PI* (d_seal_2+delta_2)* delta_2*Math.sqrt(2*g*H_leak2);
+							Double	Q_leak1	= myu11*Math.PI* (d_seal_1+delta_1)* delta_1*Math.sqrt(2.0*g*H_leak1);
+							Double	Q_leak2	= myu21*Math.PI* (d_seal_2+delta_2)* delta_2*Math.sqrt(2.0*g*H_leak2);
 							          u_y1	= 0.5*omega*(d_seal_1+delta_1);
 							          u_y2	= 0.5*omega*(d_seal_2+delta_2);
 							          v_01	= Q_leak1/ (Math.PI*(d_seal_1+delta_1)* delta_1);
@@ -631,8 +631,17 @@ public class Window_01 {
 							          Rey_1	= 2.0*delta_1 * Math.sqrt(Math.pow(v_01, 2.0)	+	Math.pow(0.5*u_y1, 2.0))/nyu;
 							          Rey_2	= 2.0*delta_2 * Math.sqrt(Math.pow(v_02, 2.0)	+	Math.pow(0.5*u_y2, 2.0))/nyu;
 							          if (chckbxNewCheckBox_3.isSelected()) {
-							        	  lyambda1	= 0.28316210710108*Math.pow(Rey_1, -0.239175686607085);	textField_22.setText(lyambda1.toString());
-							        	  lyambda2	= 0.28316210710108*Math.pow(Rey_2, -0.239175686607085);	textField_29.setText(lyambda1.toString());
+							        
+							        	  
+							        	  
+							        	  lyambda1	= Math.rint(0.28316210710108*Math.pow(Rey_1, -0.239175686607085)*1000000000.0)/(1000000000.0);	textField_22.setText(lyambda1.toString());    //12345678901
+							        	  
+							        	  
+							        	  lyambda2	= Math.rint(0.28316210710108*Math.pow(Rey_2, -0.239175686607085)*1000000000.0)/(1000000000.0);	textField_29.setText(lyambda1.toString());	
+							         
+							        	//12345678901
+							           // 10000000000.0
+							          
 							          } 	
 							Double lyambda_gap1	= lyambda1*Math.sqrt(1.0+	0.25/Math.pow(1.0+1.3*Math.sqrt(lyambda1), 2.0)	*	Math.pow(u_y1/v_01, 2.0));
 							Double lyambda_gap2	= lyambda2*Math.sqrt(1.0+	0.25/Math.pow(1.0+1.3*Math.sqrt(lyambda2), 2.0)	*	Math.pow(u_y2/v_02, 2.0));
@@ -650,7 +659,7 @@ public class Window_01 {
 							          Rey_1	= 2.0*delta_1 * Math.sqrt(Math.pow(v_01, 2.0)	+	Math.pow(0.5*u_y1, 2.0))/nyu;
 							         
 							          if (chckbxNewCheckBox_3.isSelected()) {
-							        	  lyambda1	= 0.28316210710108*Math.pow(Rey_1, -0.239175686607085);	textField_22.setText(lyambda1.toString());										
+							        	  lyambda1	= Math.rint(0.28316210710108*Math.pow(Rey_1, -0.239175686607085)*1000000000.0)/(1000000000.0);	textField_22.setText(lyambda1.toString());										
 							          }
 							Double lyambda_gap1	= lyambda1*Math.sqrt(1.0+	0.25/Math.pow(1.0+1.3*Math.sqrt(lyambda1), 2.0)	*	Math.pow(u_y1/v_01, 2.0));
 							
@@ -675,7 +684,7 @@ public class Window_01 {
 				   lblNewLabel_34.setText(myu1.toString()); 		lblNewLabel_43.setText(myu2.toString());
 				   lblNewLabel_35.setText(Rey_1.toString()); 		lblNewLabel_44.setText(Rey_2.toString());
 				   lblNewLabel_36.setText(Q_leak_1.toString());		lblNewLabel_45.setText(Q_leak_2.toString());
-				   lblNewLabel_37.setText(Q_summ_1.toString());
+				   lblNewLabel_37.setText(Q_summ.toString());
 				   lblNewLabel_38.setText(Eff_vol.toString());
 				   lblNewLabel_39.setText(H_stat.toString());
 				   lblNewLabel_51.setText(V_abs2.toString());
@@ -838,7 +847,7 @@ public class Window_01 {
 				Double d_hub	= Double.parseDouble(textField_12.getText())/1000.0;
 				Double d_suc	= Double.parseDouble(textField_13.getText())/1000.0;			//Suction diameter, mm --> m
 					if (d_suc>d_hub) {
-						Double K_0		= Math.pow((d_suc*d_suc-d_hub*d_hub), 0.5)/D_flow;
+						Double K_0		= Math.sqrt(d_suc*d_suc-d_hub*d_hub)/D_flow;
 						Double K_01		= new BigDecimal(K_0).setScale(5, RoundingMode.UP).doubleValue();  //rounding of K_01
 
 						lblNewLabel_48.setText(K_01.toString());
@@ -931,7 +940,7 @@ public class Window_01 {
 			  Java_01.Java_01(e);
 			};
 		});		
-		textField_22.setText("0.031");	textField_22.setFont(new Font("Courier New", Font.BOLD, 14));	textField_22.setBounds(620, 155, 60, 20);  	frame.getContentPane().add(textField_22);	textField_22.setColumns(15);
+		textField_22.setText("0.031");	textField_22.setFont(new Font("Courier New", Font.BOLD, 14));	textField_22.setBounds(620, 155, 115, 20);  	frame.getContentPane().add(textField_22);	textField_22.setColumns(15);
 
 		
 		textField_23 = new JTextField();
@@ -958,7 +967,7 @@ public class Window_01 {
 			  Java_01.Java_01(e);
 			};
 		});		
-		textField_25.setEnabled(false);	textField_25.setVisible(false); textField_25.setText("0.25");	textField_25.setFont(new Font("Courier New", Font.BOLD, 14));	textField_25.setBounds(795, 30, 60, 20);  	frame.getContentPane().add(textField_25);	textField_25.setColumns(15);
+		textField_25.setEnabled(false);	textField_25.setVisible(false); textField_25.setText("0.25");	textField_25.setFont(new Font("Courier New", Font.BOLD, 14));	textField_25.setBounds(740, 30, 60, 20);  	frame.getContentPane().add(textField_25);	textField_25.setColumns(15);
 
 		
 		textField_26 = new JTextField();
@@ -967,7 +976,7 @@ public class Window_01 {
 			  Java_01.Java_01(e);
 			};
 		});		
-		textField_26.setEnabled(false);	textField_26.setVisible(false);	textField_26.setText("20");		textField_26.setFont(new Font("Courier New", Font.BOLD, 14));	textField_26.setBounds(795, 55, 60, 20);  	frame.getContentPane().add(textField_26);	textField_26.setColumns(15);
+		textField_26.setEnabled(false);	textField_26.setVisible(false);	textField_26.setText("20");		textField_26.setFont(new Font("Courier New", Font.BOLD, 14));	textField_26.setBounds(740, 55, 60, 20);  	frame.getContentPane().add(textField_26);	textField_26.setColumns(15);
 
 		
 		textField_27 = new JTextField();
@@ -976,7 +985,7 @@ public class Window_01 {
 			  Java_01.Java_01(e);
 			};
 		});				
-		textField_27.setEnabled(false);	textField_27.setVisible(false);	textField_27.setText("0.5");	textField_27.setFont(new Font("Courier New", Font.BOLD, 14));	textField_27.setBounds(795, 80, 60, 20);  	frame.getContentPane().add(textField_27);	textField_27.setColumns(15);
+		textField_27.setEnabled(false);	textField_27.setVisible(false);	textField_27.setText("0.5");	textField_27.setFont(new Font("Courier New", Font.BOLD, 14));	textField_27.setBounds(740, 80, 60, 20);  	frame.getContentPane().add(textField_27);	textField_27.setColumns(15);
 
 		
 		textField_28 = new JTextField();
@@ -985,7 +994,7 @@ public class Window_01 {
 			  Java_01.Java_01(e);
 			};
 		});		
-		textField_28.setEnabled(false);	textField_28.setVisible(false);	textField_28.setText("102");	textField_28.setFont(new Font("Courier New", Font.BOLD, 14));	textField_28.setBounds(795, 355, 60, 20);  	frame.getContentPane().add(textField_28);	textField_28.setColumns(15);
+		textField_28.setEnabled(false);	textField_28.setVisible(false);	textField_28.setText("102");	textField_28.setFont(new Font("Courier New", Font.BOLD, 14));	textField_28.setBounds(740, 355, 60, 20);  	frame.getContentPane().add(textField_28);	textField_28.setColumns(15);
 
 		
 		textField_29 = new JTextField();
@@ -994,7 +1003,7 @@ public class Window_01 {
 			  Java_01.Java_01(e);
 			};
 		});
-		textField_29.setEnabled(false);	textField_29.setVisible(false);	textField_29.setText("0.031");	textField_29.setFont(new Font("Courier New", Font.BOLD, 14));	textField_29.setBounds(795, 155, 60, 20);  	frame.getContentPane().add(textField_29);	textField_29.setColumns(15);
+		textField_29.setEnabled(false);	textField_29.setVisible(false);	textField_29.setText("0.031");	textField_29.setFont(new Font("Courier New", Font.BOLD, 14));	textField_29.setBounds(740, 155, 115, 20);  	frame.getContentPane().add(textField_29);	textField_29.setColumns(15);
 		
 		
 		textField_30 = new JTextField();
