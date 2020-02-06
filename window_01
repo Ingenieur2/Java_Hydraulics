@@ -620,8 +620,8 @@ public class Window_01 {
 				Double v_01		= 0.13,	v_02	= 0.14;
 				Double Rey_1	= 1.0,	Rey_2	= 2.0;
 				Double omega	=  Math.PI*n/60.0;
-					if (chckbxNewCheckBox.isSelected()) {
-						while (Math.abs(myu22-myu21)>=0.000000000000001) {
+					if (chckbxNewCheckBox.isSelected()) {//0.000000000000001
+						while (Math.abs(myu22-myu21)>=0.0000000001) {
 							Double	Q_leak1	= myu11*Math.PI* (d_seal_1+delta_1)* delta_1*Math.sqrt(2.0*g*H_leak1);
 							Double	Q_leak2	= myu21*Math.PI* (d_seal_2+delta_2)* delta_2*Math.sqrt(2.0*g*H_leak2);
 							          u_y1	= 0.5*omega*(d_seal_1+delta_1);
@@ -634,10 +634,10 @@ public class Window_01 {
 							        
 							        	  
 							        	  
-							        	  lyambda1	= Math.rint(0.28316210710108*Math.pow(Rey_1, -0.239175686607085)*1000000000.0)/(1000000000.0);	textField_22.setText(lyambda1.toString());    //12345678901
+							        	  lyambda1	= Math.rint(0.28316210710108*Math.pow(Rey_1, -0.239175686607085)*100000000000.0)/(100000000000.0);	textField_22.setText(lyambda1.toString());    //12345678901
 							        	  
 							        	  
-							        	  lyambda2	= Math.rint(0.28316210710108*Math.pow(Rey_2, -0.239175686607085)*1000000000.0)/(1000000000.0);	textField_29.setText(lyambda1.toString());	
+							        	  lyambda2	= Math.rint(0.28316210710108*Math.pow(Rey_2, -0.239175686607085)*100000000000.0)/(100000000000.0);	textField_29.setText(lyambda1.toString());	
 							         
 							        	//12345678901
 							           // 10000000000.0
@@ -650,8 +650,8 @@ public class Window_01 {
 						             myu12	= 1.0/Math.sqrt(1.35+lyambda_gap1*l_gap1/(2.0*delta_1));
 						             myu22	= 1.0/Math.sqrt(1.35+lyambda_gap2*l_gap2/(2.0*delta_2));
 						}  					
-					} else {
-						while (Math.abs(myu12-myu11)>0.00000000000000001) {
+					} else {  //0.00000000000001
+						while (Math.abs(myu12-myu11)>0.0000000001) {
 							Double	Q_leak	= myu11*Math.PI* (d_seal_1+delta_1)* delta_1*Math.sqrt(2.0*g*H_leak1);
 							          u_y1	= 0.5*omega*(d_seal_1+delta_1);
 							          v_01	= Q_leak/ (Math.PI*(d_seal_1+delta_1)* delta_1);
@@ -659,7 +659,7 @@ public class Window_01 {
 							          Rey_1	= 2.0*delta_1 * Math.sqrt(Math.pow(v_01, 2.0)	+	Math.pow(0.5*u_y1, 2.0))/nyu;
 							         
 							          if (chckbxNewCheckBox_3.isSelected()) {
-							        	  lyambda1	= Math.rint(0.28316210710108*Math.pow(Rey_1, -0.239175686607085)*1000000000.0)/(1000000000.0);	textField_22.setText(lyambda1.toString());										
+							        	  lyambda1	= Math.rint(0.28316210710108*Math.pow(Rey_1, -0.239175686607085)*100000000000.0)/(100000000000.0);	textField_22.setText(lyambda1.toString());										
 							          }
 							Double lyambda_gap1	= lyambda1*Math.sqrt(1.0+	0.25/Math.pow(1.0+1.3*Math.sqrt(lyambda1), 2.0)	*	Math.pow(u_y1/v_01, 2.0));
 							
